@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>History of requests</title>
+</head>
+<body>
+    {% include 'menu.html' %}
+    <hr>
+    <table border="2px">
+        <tr>
+            <td align="center">Date</td>
+            <td align="center">Time</td>
+            <td align="center">String</td>
+            <td align="center">Words</td>
+            <td align="center">Numbers</td>
+            <td align="center">User</td>
+        </tr>
+        {% for item in data %}
+        <tr>
+            <td align="center">{{ item.date }}</td>
+            <td align="center">{{ item.time }}</td>
+            <td align="center">{{ item.istring }}</td>
+            <td align="center">{{ item.word_cnt }}</td>
+            <td align="center">{{ item.nmbr_cnt }}</td>
+            <td align="center">{{ item.author }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</body>
+</html>

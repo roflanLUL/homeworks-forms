@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>String to words</title>
+</head>
+<body>
+    {% include 'menu.html' %}
+    <h1>String2words</h1>
+    <br />
+    Current user: {{ request.user }}
+    {% if nothing_entered %}
+    <form action="/str2words/" method="POST">
+        {% csrf_token%}
+        {{ form.input_string.label}}: {{form.input_string}}<br>
+        <input type="submit" value="Submit">
+    </form>
+    {% else %}
+    <p>Words in string: {{ wrd_cntr }}</p>
+    <p>Numbers in string: {{ nmbr_cntr }}</p>
+    <p>Words of string:</p>
+        {% for item in wdata %}
+        <ul>
+            <li>{{ item.item }}</li>
+        </ul>
+        {% endfor %}
+    <p>Numbers of string:</p>
+        {% for item in ndata %}
+        <ul>
+            <li>{{ item.item }}</li>
+        </ul>
+        {% endfor %}
+    {% endif %}
+    <hr>
+</body>
+</html>
