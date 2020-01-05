@@ -23,22 +23,29 @@ def menu():
 def index(request):
     context = menu()
     now = datetime.datetime.now()
-    context['today_date'] = now.day
-    context['today_month'] = now.month
-    context['today_year'] = now.year
+    context['today'] = now.strftime("%d/%m/%Y")
+    context['time'] = now.strftime("%H:%M:%S")
     return render(request, 'index.html', context)
 
 
 def word_counter(s):
-    return len(s.split())
+    a = []
+    for i in s.split():
+        if not i.isdigit():
+            a.append(i)
+    return len(a)
 
 
 def number_counter(s):
-    count = len(re.findall('\d+', s))
+    return len(re.findall('\d+', s))
 
 
 def words(s):
-    return list(map(str, re.findall('\w+', s)))
+    a = []
+    for i in s.split():
+        if not i.isdigit():
+            a.append(i)
+    return a
 
 
 def numbers(s):
@@ -48,40 +55,35 @@ def numbers(s):
 @login_required
 def str2words(request):
     context = menu()
-    ndata = []
-    wdata = []
+    number_data = []
+    word_data = []
     user = User.objects.filter(username='vasya').first()
     if request.method == 'POST':
         form = StringForm(request.POST)
         if form.is_valid():
             input_string = form.data['input_string']
-            wc = wrd_cntr(input_string)
-            context['wrd_cntr'] = wc
-            nc = nmbr_cntr(input_string)
-            context['nmbr_cntr'] = nc
-
-            today = datetime.datetime.now()
+            context['word_counter'] = word_counter(input_string)
+            context['number_counter'] = number_counter(input_string)
+            now = datetime.datetime.now()
             item = StrHistory(
-                date=today.strftime("%d/%m/%Y"),
-                time=today.strftime("%H:%M:%S"),
-                istring=input_string,
-                word_cnt=wc,
-                nmbr_cnt=nc,
-                author=user
-            )
+                date=now.strftime("%d/%m/%Y"),
+                time=now.strftime("%H:%M:%S"),
+                string=input_string,
+                word_count=word_counter(input_string),
+                number_count=number_counter(input_string),
+                author=user)
             item.save()
 
-            # List of words
-            for i in wrd_list(input_string):
-                wdata.append({'item': i})
-            context['wdata'] = wdata
+            for i in words(input_string):
+                word_data.append({'item': i})
+            context['word_data'] = word_data
 
-            # List of numbers
-            for i in nmbr_list(input_string):
-                ndata.append({'item': i})
-            context['ndata'] = ndata
+            for i in numbers(input_string):
+                number_data.append({'item': i})
+            context['number_data'] = number_data
         else:
-            pass
+            context['form'] = form
+            context['errors'] = 'Найдены ошибки в данных формы'
     else:
         context['nothing_entered'] = True
         context['form'] = StringForm()
@@ -91,6 +93,6 @@ def str2words(request):
 @login_required
 def str_history(request):
     context = menu()
-    data = StrHistory.objects.all()
-    context['data'] = data
+    datahistory = StrHistory.objects.all()
+    context['datahistory'] = datahistory
     return render(request, 'str_history.html', context)

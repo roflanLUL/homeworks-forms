@@ -6,9 +6,9 @@
 </head>
 <body>
     {% include 'menu.html' %}
+    <hr>
     <h1>String2words</h1>
-    <br />
-    Current user: {{ request.user }}
+    <h2>Current user: {{ request.user }}</h2>
     {% if nothing_entered %}
     <form action="/str2words/" method="POST">
         {% csrf_token%}
@@ -16,21 +16,22 @@
         <input type="submit" value="Submit">
     </form>
     {% else %}
-    <p>Words in string: {{ wrd_cntr }}</p>
-    <p>Numbers in string: {{ nmbr_cntr }}</p>
-    <p>Words of string:</p>
-        {% for item in wdata %}
+    <h3>Words in string: {{ word_counter }}</h3>
+    <h3>Numbers in string: {{ number_counter }}</h3>
+    <h3>Words:</h3>
+        {% for item in word_data %}
         <ul>
             <li>{{ item.item }}</li>
         </ul>
         {% endfor %}
-    <p>Numbers of string:</p>
-        {% for item in ndata %}
+    <h3>Numbers:</h3>
+        {% for item in number_data %}
         <ul>
             <li>{{ item.item }}</li>
         </ul>
         {% endfor %}
     {% endif %}
     <hr>
+    {{ form.errors }}
 </body>
 </html>

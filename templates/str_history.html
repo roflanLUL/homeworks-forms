@@ -16,13 +16,13 @@
             <td align="center">Numbers</td>
             <td align="center">User</td>
         </tr>
-        {% for item in data %}
+        {% for item in datahistory %}
         <tr>
             <td align="center">{{ item.date }}</td>
             <td align="center">{{ item.time }}</td>
-            <td align="center">{{ item.istring }}</td>
-            <td align="center">{{ item.word_cnt }}</td>
-            <td align="center">{{ item.nmbr_cnt }}</td>
+            <td align="center">{{ item.string }}</td>
+            <td align="center">{{ item.word_count }}</td>
+            <td align="center">{{ item.number_count }}</td>
             <td align="center">{{ item.author }}</td>
         </tr>
         {% endfor %}
